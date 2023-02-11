@@ -1,59 +1,56 @@
-// PROTOTYPAL INHERITANCE AND CHAINING.
 
-// Setting the prototype (parent).
-const animal = {
-    eats: true,
-    walk () {console.log(`aimal walk`)}
-};
-
-
-// Setting the prototype of rabbit as ANIMAL, it will inherit all of its methods and property (WALK and EATS), so if we will console.log `rabbit.eats` we well get `true`.
-const rabbit = {
-    jumps: true,
-    __proto__: animal
-};
-console.log(rabbit.eats); // TRUE.
-rabbit.walk(); // `animal walk`.
-
-
-// Setting the prototype of `longEar` as RABBIT will get to it all of the property and methods of `ANIMAL` and `RABBITS`, cause it's possible to chain the inheritance.
-const longEar = {
-    earLength: 10,
-    __proto__: rabbit
-};
-console.log(longEar.eats); // TRUE
-longEar.walk();  // animal walk.
-console.log(longEar.jumps); // True;
-
-console.log(Object.getPrototypeOf(longEar)); // Use the `getPrototypeOf` method of Object to see the arguments prototype.
+// PROTOTYPES AND PROTOTYPICAL INHERITANCE.
+// Prototypes are essentially parents of other objects. Every `child` inherit all the members in its prototype. When calling a method on an object if that object doesn't have that specific method, the JS engine will search its prototype (parent) for it, and if it cannot find the method in the prototype, the result will be undefined. A PROTOTYPE IS JUST A REGULAR OBJECT.
 
 
 
+// MULTILEVEL INHERITANCE.
 
-// ITERATING ISTANCE AND PROTOTYPE MEMBERS.
-
-function Circle (radius) {
-
-// Instance members.
-
+function Circle(radius) {
     this.radius = radius;
-
-    this.move = function() {
-        console.log(`move`);
-    } 
+    this.draw = function() {console.log(`draw`);}
 };
 
+const circleOne = new Circle(10);
+// Opening circleOne on the console we'll see that its PROTOTYPE will be the `Circle` constructor.
+// OBJECTS CREATED BY A GIVEN CONSTRUCTOR WILL HAVE THE SAME PROTOTYPE. 
+// THE `Circle` constructor will also have a parent (PROTOTYPE), that will be the OBJECT PROTOTYPE.
 
-// Prototype members.
-Circle.prototype.draw = function() {
+
+
+// PROPERTY DESCRIPTORS.
+// Every object property has THREE special attributes (flags) that we can access using the OBJECTS METHOD `getOwnPropertyDescriptor`. They are `configurable`, `enumerable`, `writable`, by default setted on true on our own objects.
+
+
+const person = {name: `John`};
+const descriptors = Object.getOwnPropertyDescriptor(person, `name`);
+console.log(descriptors); // return an object => {value: 'John', writable: true, enumerable: true, configurable: true}, CALLED PROPERTY DESCRIPTOR.
+
+// We can change their boolean value using the `defineProperty` object method.
+
+Object.defineProperty(person, `name`, {
+    writable: false,
+    enumerable: false,
+    configurable: true
+});
+
+
+
+// PROTOTYPE VS ISTANCE MEMBERS.
+// When dealing with large number of objects it's a good practice to put their method on their prototype.
+
+function Square(side) {
+    this.side = side;
+};
+
+// Before we put the draw method inside the constructor, using that as an instance, but that will create several copies of that method, one for every object we will create with that constructor. This will affect memory usage. We can put the draw method on the constructor prototype, and thanks to the inheritance it will be accessible to all its child.
+
+// We access the prototype using and then we add the method using the dot notation as it wuold be on a normal object.
+Square.prototype.draw = function() {
     console.log(`draw`);
 };
 
-const c1 = new Circle(1);
 
-console.log(Object.keys(c1)); // Only returns instance members.
 
-for (key in c1) console.log(key); // RETURN BOTH INSTANCE AND PROTOTYPE MEMBERS.
 
-console.log(c1.hasOwnProperty(`radius`)); // To check instance properties.  RETURN TRUE.
-console.log(c1.hasOwnProperty(`draw`)); //  RETURN FALSE, draw is a prototype member.
+
