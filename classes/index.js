@@ -58,7 +58,7 @@ console.log(Color.colorName);
 
 
 
-
+// PRIVATE MEMBERS.
 // It's possible to define PRIVATE METHODS AND PROPERTIES (FIELDS) using and HASHTAG befor the declaration #.
 
 class Car {
@@ -81,6 +81,43 @@ class Car {
 
 
 // GETTERS AND SETTERS.
+
+
+
+// INHERITANCE.
+
+
+
+// METHOD OVERRIDING.
+// Method overriding works exactly like for objects. When two classes, with one inheriting from the other, have a method with the same name, prototypical inheritance will take the one on the child first.
+
+// When we need to access a method in the parent, we can use the super keyword. To call a method, super.NAMEOFTHEMETHOD().
+
+
+class Shape {
+
+    move(){
+        console.log(`move`);
+    }
+
+    draw() {
+        console.log(`draw`);
+    }
+
+};
+
+
+class Circle extends Shape {
+  
+    move() {
+        super.move()                    // Calling the PARENT move method, with the super keyword.
+        console.log(`circle move!`);
+    }
+
+};
+
+const c = new Circle();
+console.log(c.move()); // Will log `circle move`;
 
 
 
